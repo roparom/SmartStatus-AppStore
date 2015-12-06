@@ -1,109 +1,110 @@
 {
-  "uuid": "fb5338d6-751c-4d4f-9074-70d4bad021a0",
-  "shortName": "SmartStatus",
-  "longName": "SmartStatus",
-  "companyName": "Robert Hesse",
-  "versionCode": 1,
-  "versionLabel": "1.0.0",
-  "watchapp": {
-    "watchface": false
-  },
-  "appKeys": {
-    "dummy": 0
-  },
-  "resources": {
-"media": [
-		{
-		"type": "png",
-		"name": "IMAGE_MENU_ICON",
-		"file": "images/app_icon.png",
-		"menuIcon": true
-		},
-	   {
-        "type": "png",
-        "name": "IMAGE_BACKGROUND",
-        "file": "images/background.png"
-        },
-		{
-	        "type": "png",
-	        "name": "IMAGE_DISCONNECT",
-	        "file": "images/disconnect_large.png"
-	    },
-		{
-	        "type": "png",
-	        "name": "IMAGE_SUN",
-	        "file": "images/sun.png"
-	    },
-		{
-	        "type": "png",
-	        "name": "IMAGE_RAIN",
-	        "file": "images/rain.png"
-	    },
-		{
-	        "type": "png",
-	        "name": "IMAGE_CLOUD",
-	        "file": "images/cloud.png"
-	    },
-		{
-	        "type": "png",
-	        "name": "IMAGE_SUN_CLOUD",
-	        "file": "images/sun_cloud.png"
-	    }
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_WIND",
-	        "file": "images/wind.png"
-	    }
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_FOG",
-	        "file": "images/fog.png"
-	    }	
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_SNOW",
-	        "file": "images/snow.png"
-	    }
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_THUNDER",
-	        "file": "images/thunder.png"
-	    }	
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_BATTERY",
-	        "file": "images/battery.png"
-	    }	
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_BATTERY_PHONE",
-	        "file": "images/battery_phone.png"
-	    }	
-		,
-		{
-	        "type": "png",
-	        "name": "IMAGE_BATTERY_PEBBLE",
-	        "file": "images/battery_pebble.png"
-	    }	
-		,
-
-	    {
-        "type": "font",
-        "name": "FONT_ROBOTO_CONDENSED_21",
-        "file": "fonts/Roboto-Condensed.ttf"
-        },
-
-        {
-        "type": "font",
-        "characterRegex": "[:0-9]",
-        "name": "FONT_ROBOTO_BOLD_SUBSET_49",
-        "file": "fonts/Roboto-Bold.ttf"
-        }
-	  ]  }
+    "appKeys": {
+        "dummy": 0
+    },
+    "capabilities": [
+        "location"
+    ],
+    "companyName": "Robert Hesse / roparom",
+    "longName": "SmartStatus+",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/app_icon.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            },
+            {
+                "characterRegex": "[:0-9]",
+                "compatibility": "2.7",
+                "file": "fonts/Roboto-Bold.ttf",
+                "name": "FONT_ROBOTO_BOLD_SUBSET_49",
+                "type": "font"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/Roboto-Condensed.ttf",
+                "name": "FONT_ROBOTO_CONDENSED_21",
+                "type": "font"
+            },
+            {
+                "file": "images/battery_pebble.png",
+                "name": "IMAGE_BATTERY_PEBBLE",
+                "type": "png"
+            },
+            {
+                "file": "images/battery_phone.png",
+                "name": "IMAGE_BATTERY_PHONE",
+                "type": "png"
+            },
+            {
+                "file": "images/battery.png",
+                "name": "IMAGE_BATTERY",
+                "type": "png"
+            },
+            {
+                "file": "images/thunder.png",
+                "name": "IMAGE_THUNDER",
+                "type": "png"
+            },
+            {
+                "file": "images/snow.png",
+                "name": "IMAGE_SNOW",
+                "type": "png"
+            },
+            {
+                "file": "images/fog.png",
+                "name": "IMAGE_FOG",
+                "type": "png"
+            },
+            {
+                "file": "images/wind.png",
+                "name": "IMAGE_WIND",
+                "type": "png"
+            },
+            {
+                "file": "images/sun_cloud.png",
+                "name": "IMAGE_SUN_CLOUD",
+                "type": "png"
+            },
+            {
+                "file": "images/cloud.png",
+                "name": "IMAGE_CLOUD",
+                "type": "png"
+            },
+            {
+                "file": "images/rain.png",
+                "name": "IMAGE_RAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/sun.png",
+                "name": "IMAGE_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/disconnect_large.png",
+                "name": "IMAGE_DISCONNECT",
+                "type": "png"
+            },
+            {
+                "file": "images/background.png",
+                "name": "IMAGE_BACKGROUND",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "SmartStatus+",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "fb5338d6-751c-4d4f-9074-70d4bad021a0",
+    "versionLabel": "1.4",
+    "watchapp": {
+        "watchface": false
+    }
 }

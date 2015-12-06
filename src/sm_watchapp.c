@@ -99,30 +99,24 @@ void sendCommandInt(int key, int param) {
 }
 
 
-
-
-
-static void select_click_down_handler(ClickRecognizerRef recognizer, void *context) {
+//static void select_click_down_handler(ClickRecognizerRef recognizer, void *context) {
 	//show the weather condition instead of temperature while center button is pressed
-	layer_set_hidden(text_layer_get_layer(text_weather_temp_layer), true);
-	layer_set_hidden(text_layer_get_layer(text_weather_cond_layer), false);
-}
+//	layer_set_hidden(text_layer_get_layer(text_weather_temp_layer), true);
+//	layer_set_hidden(text_layer_get_layer(text_weather_cond_layer), false);
+//}
 
-static void select_click_up_handler(ClickRecognizerRef recognizer, void *context) {
+//static void select_click_up_handler(ClickRecognizerRef recognizer, void *context) {
 	//revert to showing the temperature 
-	layer_set_hidden(text_layer_get_layer(text_weather_temp_layer), false);
-	layer_set_hidden(text_layer_get_layer(text_weather_cond_layer), true);
-}
+//	layer_set_hidden(text_layer_get_layer(text_weather_temp_layer), false);
+//	layer_set_hidden(text_layer_get_layer(text_weather_cond_layer), true);
+//}
 
-
-static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+static void select_click_handler(ClickRecognizerRef recognizer, void *context) {	
 	//update all data
 	reset();
 	
 	sendCommandInt(SM_SCREEN_ENTER_KEY, STATUS_SCREEN_APP);
-}
-
-static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
+	
 	//slide layers in/out
 
 	property_animation_destroy((PropertyAnimation*)ani_in);
@@ -138,13 +132,42 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
 	ani_in = property_animation_create_layer_frame(animated_layer[active_layer], &GRect(138, 124, 144, 45), &GRect(0, 124, 144, 45));
 	animation_schedule((Animation*)ani_in);
 
-
+}
+	
+static void select_long_click_handler(ClickRecognizerRef recognizer, void *context) {
+	sendCommand(SM_PLAYPAUSE_KEY);
 }
 
+
+static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+	sendCommand(SM_VOLUME_UP_KEY);
+}
+
+static void up_long_click_handler(ClickRecognizerRef recognizer, void *context) {
+	sendCommand(SM_PREVIOUS_TRACK_KEY);
+}
+
+static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
+	sendCommand(SM_VOLUME_DOWN_KEY);
+}
+
+static void down_long_click_handler(ClickRecognizerRef recognizer, void *context) {
+	sendCommand(SM_NEXT_TRACK_KEY);
+}
+
+//
 static void click_config_provider(void *context) {
-  window_raw_click_subscribe(BUTTON_ID_SELECT, select_click_down_handler, select_click_up_handler, context);
-  window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
-  window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+  //  window_raw_click_subscribe(BUTTON_ID_SELECT, select_click_down_handler, select_click_up_handler, context);
+ 
+	window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
+	window_long_click_subscribe(BUTTON_ID_SELECT, 250, select_long_click_handler, NULL);
+  
+	window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
+	window_long_click_subscribe(BUTTON_ID_UP, 250, up_long_click_handler, NULL); 
+ 
+	window_long_click_subscribe(BUTTON_ID_DOWN, 250, down_long_click_handler, NULL); 
+	window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+	
 }
 
 static void window_load(Window *window) {
@@ -179,9 +202,38 @@ static void window_disappear(Window *window)
 
 void battery_layer_update_callback(Layer *me, GContext* ctx) {
 	
-	//draw the remaining battery percentage
-	graphics_context_set_stroke_color(ctx, GColorBlack);
-	graphics_context_set_fill_color(ctx, GColorWhite);
+	//	custom colours
+		GColor stroke;
+		GColor fill;
+	
+		//PHONE BATTERY STATE COLOURS
+		if(batteryPercent <= 35) { 
+		stroke = PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorRed, GColorWhite);
+	}	
+		else if(batteryPercent <= 45) {
+		stroke = PBL_IF_COLOR_ELSE(GColorOrange, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorChromeYellow, GColorWhite);
+	}
+		else if(batteryPercent <= 55) {
+		stroke = PBL_IF_COLOR_ELSE(GColorGreen, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorBrightGreen, GColorWhite);
+	}
+		else if(batteryPercent == 100) {
+		stroke = PBL_IF_COLOR_ELSE(GColorBlue, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorCobaltBlue, GColorWhite); 
+	}
+		else {
+		stroke = PBL_IF_COLOR_ELSE(GColorDarkGreen, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorGreen, GColorWhite); 		
+	}
+	
+	
+	graphics_context_set_stroke_color(ctx, stroke); //from fixed colour to stroke & fill
+	graphics_context_set_fill_color(ctx, fill);
+
+	//graphics_context_set_stroke_color(ctx, GColorBlack);
+	//graphics_context_set_fill_color(ctx, GColorWhite);
 
 	graphics_fill_rect(ctx, GRect(2+16-(int)((batteryPercent/100.0)*16.0), 2, (int)((batteryPercent/100.0)*16.0), 8), 0, GCornerNone);
 	
@@ -189,9 +241,38 @@ void battery_layer_update_callback(Layer *me, GContext* ctx) {
 
 void battery_pbl_layer_update_callback(Layer *me, GContext* ctx) {
 	
+		GColor stroke;
+		GColor fill;
+	
+		//PEBBLE BATTERY STATE COLOURS
+		if(batteryPblPercent <= 20) { 
+		stroke = PBL_IF_COLOR_ELSE(GColorDarkCandyAppleRed, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorRed, GColorWhite);
+	}	
+		else if(batteryPblPercent <= 30) {
+		stroke = PBL_IF_COLOR_ELSE(GColorOrange, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorChromeYellow, GColorWhite);
+	}
+		else if(batteryPblPercent <= 40) {
+		stroke = PBL_IF_COLOR_ELSE(GColorGreen, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorBrightGreen, GColorWhite);
+	}	
+		else if(batteryPblPercent == 100) {
+		stroke = PBL_IF_COLOR_ELSE(GColorBlue, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorCobaltBlue, GColorWhite); 
+	}
+		else {
+		stroke = PBL_IF_COLOR_ELSE(GColorDarkGreen, GColorBlack); 	
+		fill = PBL_IF_COLOR_ELSE(GColorGreen, GColorWhite); 		
+	}
+	
+	
+	graphics_context_set_stroke_color(ctx, stroke); //from fixed colour to stroke & fill
+	graphics_context_set_fill_color(ctx, fill);
+	
 	//draw the remaining pebble battery percentage
-	graphics_context_set_stroke_color(ctx, GColorBlack);
-	graphics_context_set_fill_color(ctx, GColorWhite);
+	//graphics_context_set_stroke_color(ctx, GColorBlack);
+	//graphics_context_set_fill_color(ctx, GColorWhite);
 
 	graphics_fill_rect(ctx, GRect(2+16-(int)((batteryPblPercent/100.0)*16.0), 2, (int)((batteryPblPercent/100.0)*16.0), 8), 0, GCornerNone);
 	
@@ -216,7 +297,7 @@ void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
 
 
   // TODO: Only update the date when it's changed.
-  strftime(date_text, sizeof(date_text), "%a, %b %e", tick_time);
+  strftime(date_text, sizeof(date_text), "%a, %e %b.", tick_time);
   text_layer_set_text(text_date_layer, date_text);
 
 
@@ -267,7 +348,15 @@ void batteryChanged(BatteryChargeState batt) {
 
 static void init(void) {
   window = window_create();
-  window_set_fullscreen(window, true);
+	
+  //window_set_fullscreen(window, true);
+  
+	#if PBL_BW
+	window_set_fullscreen(window, true);
+	#else
+	
+	#endif
+	
   window_set_click_config_provider(window, click_config_provider);
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
